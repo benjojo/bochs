@@ -23,6 +23,7 @@
 #include "bochs.h"
 #include "cpu/cpu.h"
 #include "iodev/iodev.h"
+#include <ctime>
 #define LOG_THIS BX_MEM_THIS
 
 //
@@ -43,7 +44,10 @@ void BX_MEM_C::writePhysicalPage(BX_CPU_C *cpu, bx_phy_address addr, unsigned le
   Bit8u *data_ptr;
   bx_phy_address a20addr = A20ADDR(addr);
   struct memory_handler_struct *memory_handler = NULL;
-
+  if(lastsnapshot < time()) {
+    // We need to make a snapshot now.
+    lastsnapshot = time();
+  }
   // Note: accesses should always be contained within a single page
   if ((addr>>12) != ((addr+len-1)>>12)) {
     BX_PANIC(("writePhysicalPage: cross page access at address 0x" FMT_PHY_ADDRX ", len=%d", addr, len));
