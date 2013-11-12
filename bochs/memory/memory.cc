@@ -36,6 +36,8 @@
 // 0xf0000 - 0xfffff    Upper BIOS Area (64K)
 //
 
+static int lastsnapshot;
+
 void BX_MEM_C::writePhysicalPage(BX_CPU_C *cpu, bx_phy_address addr, unsigned len, void *data)
 {
   Bit8u *data_ptr;
