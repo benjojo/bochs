@@ -24,7 +24,11 @@
 #include "cpu/cpu.h"
 #include "iodev/iodev.h"
 #include <ctime>
+#include <iostream>
+#include <fstream>
 #define LOG_THIS BX_MEM_THIS
+
+ifstream::pos_type size;
 
 //
 // Memory map inside the 1st megabyte:
@@ -44,10 +48,7 @@ void BX_MEM_C::writePhysicalPage(BX_CPU_C *cpu, bx_phy_address addr, unsigned le
   Bit8u *data_ptr;
   bx_phy_address a20addr = A20ADDR(addr);
   struct memory_handler_struct *memory_handler = NULL;
-  if(lastsnapshot < time(0)) {
-    // We need to make a snapshot now.
-    lastsnapshot = time(0);
-  }
+
   // Note: accesses should always be contained within a single page
   if ((addr>>12) != ((addr+len-1)>>12)) {
     BX_PANIC(("writePhysicalPage: cross page access at address 0x" FMT_PHY_ADDRX ", len=%d", addr, len));
@@ -405,6 +406,19 @@ void BX_MEM_C::dmaWritePhysicalPage(bx_phy_address addr, unsigned len, Bit8u *da
   if (memptr != NULL) {
     pageWriteStampTable.decWriteStamp(addr);
     memcpy(memptr, data, len);
+
+    if(lastsnapshot < time(0)) {
+      // We need to make a snapshot now.
+      lastsnapshot = time(0);
+      ifstream file ("example.bin", ios::in|ios::binary|ios::ate);
+      if (file.is_open())
+      {
+        outfile.write(&memptr, len); // sizeof can take a type
+        file.close();
+      }
+      else cout << "Unable to open file";
+    }
+
   }
   else {
     for (unsigned i=0;i < len; i++) {
