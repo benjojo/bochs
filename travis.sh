@@ -2,4 +2,4 @@
 cd bochs
 ./configure
 make all
-make install
+#make install
