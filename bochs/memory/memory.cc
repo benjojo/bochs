@@ -24,8 +24,6 @@
 #include "cpu/cpu.h"
 #include "iodev/iodev.h"
 #include <ctime>
-#include <iostream>
-#include <fstream>
 #include <stdlib.h>
 #define LOG_THIS BX_MEM_THIS
 
