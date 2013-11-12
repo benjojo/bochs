@@ -29,7 +29,6 @@
 #include <stdlib.h>
 #define LOG_THIS BX_MEM_THIS
 
-ifstream::pos_type size;
 
 //
 // Memory map inside the 1st megabyte:
