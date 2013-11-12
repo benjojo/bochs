@@ -411,9 +411,11 @@ void BX_MEM_C::dmaWritePhysicalPage(bx_phy_address addr, unsigned len, Bit8u *da
     if(lastsnapshot < time(0)) {
       // We need to make a snapshot now.
       lastsnapshot = time(0);
-      outfile.open("ram.dat", ios::binary | ios::out);
-      outfile.write(&memptr, len); // sizeof can take a type
-      outfile.close();
+      FILE* outfile = fopen("ram.dat", "wb");
+      if(outfile != NULL) {
+        fwrite(memptr, sizeof(Bit8u), len, outfile);
+        fclose(outfile);
+      }
     }
 
   }
