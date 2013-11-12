@@ -410,13 +410,9 @@ void BX_MEM_C::dmaWritePhysicalPage(bx_phy_address addr, unsigned len, Bit8u *da
     if(lastsnapshot < time(0)) {
       // We need to make a snapshot now.
       lastsnapshot = time(0);
-      ifstream file ("example.bin", ios::in|ios::binary|ios::ate);
-      if (file.is_open())
-      {
-        outfile.write(&memptr, len); // sizeof can take a type
-        file.close();
-      }
-      else cout << "Unable to open file";
+      outfile.open("ram.dat", ios::binary | ios::out);
+      outfile.write(&memptr, len); // sizeof can take a type
+      outfile.close();
     }
 
   }
