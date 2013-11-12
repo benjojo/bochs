@@ -26,6 +26,7 @@
 #include <ctime>
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
 #define LOG_THIS BX_MEM_THIS
 
 ifstream::pos_type size;
