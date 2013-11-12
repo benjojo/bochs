@@ -1,5 +1,5 @@
 #!/bin/bash
 cd bochs
-./configure
+./configure &&
 make all
 #make install
