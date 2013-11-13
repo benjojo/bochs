@@ -44,7 +44,7 @@ namespace vizzi
                 }
             }
         }
-
+        #region FileParse
         static RamEvent[] ParseFile(byte[] File)
         {
             List<RamEvent> EventList = new List<RamEvent>();
@@ -96,5 +96,6 @@ namespace vizzi
         {
             return File.ReadAllBytes(file);
         }
+        #endregion
     }
 }
