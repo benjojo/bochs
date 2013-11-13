@@ -44,6 +44,7 @@ namespace vizzi
                     int FrameTime = 1000 / 30; // 30 FPS
                     int FrameCount = 0;
                     UInt64 LastFrame = 0;
+                    int EventCount = 0;
 
                     foreach (RamEvent e in Events)
                     {
@@ -55,11 +56,11 @@ namespace vizzi
                             FrameCount++;
                             if (FrameCount % 10 == 0)
                             {
-                                Console.WriteLine("I have processed {0} Frames.", FrameCount);
+                                Console.WriteLine("I have processed {0} Frames. I'm {1}% or {2}/{3} though the events I have.", FrameCount, (float)((float)EventCount / (float)Events.Length) * 100, EventCount, Events.Length);
                             }
                         }
+                        EventCount++;
                     }
-                    Console.ReadLine();
                 }
                 else
                 {
