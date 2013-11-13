@@ -10,6 +10,14 @@ using System.Drawing;
 
 namespace vizzi
 {
+    class RamEvent 
+    {
+        public long time;
+        public int addr;
+        public int len;
+    }
+
+
     class Program
     {
         static void Main(string[] args)
@@ -25,6 +33,7 @@ namespace vizzi
             {
                 if(File.Exists(args[0]))
                 {
+                    byte[] RawFile = ReadFile(args[0]);
 
                 }
                 else
@@ -33,6 +42,17 @@ namespace vizzi
                     Environment.Exit(1);
                 }
             }
+        }
+
+        static RamEvent[] ParseFile(byte[] File)
+        {
+
+            return new RamEvent[1];
+        }
+
+        static byte[] ReadFile(string file) 
+        {
+            return File.ReadAllBytes(file);
         }
     }
 }
