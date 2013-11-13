@@ -21,6 +21,7 @@ namespace vizzi
 
     class Program
     {
+        const int MAX_RAM = 64 * 1024 * 1024;
         static void Main(string[] args)
         {
             if (args.Length == 0)
@@ -36,6 +37,29 @@ namespace vizzi
                 {
                     byte[] RawFile = ReadFile(args[0]);
                     RamEvent[] Events = ParseFile(RawFile);
+                    int res = (int)Math.Ceiling(Math.Sqrt(MAX_RAM));
+                    Bitmap WorkingPlace = new Bitmap(res, res);
+                    Console.WriteLine("Frame Size is {0}x{0}", res);
+                    Console.WriteLine("I have {0} events to process.",Events.Length);
+                    int FrameTime = 1000 / 30; // 30 FPS
+                    int FrameCount = 0;
+                    UInt64 LastFrame = 0;
+
+                    foreach (RamEvent e in Events)
+                    {
+                        ApplyEvent(WorkingPlace, e);
+                        if ((LastFrame + (UInt64)FrameTime) < e.time)
+                        {
+                            LastFrame = e.time;
+                            WorkingPlace.Save(string.Format("./{0}.png", FrameCount));
+                            FrameCount++;
+                            if (FrameCount % 10 == 0)
+                            {
+                                Console.WriteLine("I have processed {0} Frames.", FrameCount);
+                            }
+                        }
+                    }
+                    Console.ReadLine();
                 }
                 else
                 {
@@ -44,6 +68,23 @@ namespace vizzi
                 }
             }
         }
+        #region Image Processing
+
+        static Bitmap ApplyEvent(Bitmap Current, RamEvent Event)
+        {
+            int x = (int)Event.addr % Current.Height;
+            int y = (int)Event.addr / Current.Height;
+            for (int i = 0; i < Event.len; i++)
+            {
+                Current.SetPixel(x, y, Color.Red);
+                x++;
+                if (x <= Current.Height) { x = 0; y++; }
+            }
+            return Current;
+        }
+
+        #endregion
+
         #region FileParse
         static RamEvent[] ParseFile(byte[] File)
         {
