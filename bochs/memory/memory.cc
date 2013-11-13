@@ -408,8 +408,10 @@ void BX_MEM_C::dmaWritePhysicalPage(bx_phy_address addr, unsigned len, Bit8u *da
     if(lastsnapshot < time(0)) {
       // We need to make a snapshot now.
       lastsnapshot = time(0);
-      FILE* outfile = fopen("ram.dat", "wb");
+      FILE* outfile = fopen("ram.dat", "ab+");
       if(outfile != NULL) {
+		fwrite(addr, sizeof(bx_phy_address),outfile);
+		fwrite(len, sizeof(unsigned),outfile);
         fwrite(memptr, sizeof(Bit8u), len, outfile);
         fclose(outfile);
       }
