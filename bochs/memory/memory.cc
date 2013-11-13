@@ -42,6 +42,13 @@
 
 static int lastsnapshot;
 
+unsigned long GetMillisecondsTime()
+{
+   struct timeval tv;       
+   if(gettimeofday(&tv, NULL) != 0) return 0;
+   return (unsigned long)((tv.tv_sec * 1000ul) + (tv.tv_usec / 1000ul));
+}
+
 void BX_MEM_C::writePhysicalPage(BX_CPU_C *cpu, bx_phy_address addr, unsigned len, void *data)
 {
   Bit8u *data_ptr;
@@ -91,8 +98,8 @@ void BX_MEM_C::writePhysicalPage(BX_CPU_C *cpu, bx_phy_address addr, unsigned le
     lastsnapshot = time(0);
     FILE* outfile = fopen("ram.dat", "ab+");
     if(outfile != NULL) {
-      int t = clock();
-      fwrite(&t, sizeof(int),1,outfile);
+      unsigned long t = GetMillisecondsTime();
+      fwrite(&t, sizeof(long),1,outfile);
       fwrite(&addr, sizeof(Bit32u),1,outfile);
       // printf("%d", sizeof(Bit32u));
       fwrite(&len, sizeof(unsigned),1,outfile);
