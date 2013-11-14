@@ -99,6 +99,8 @@ void BX_MEM_C::writePhysicalPage(BX_CPU_C *cpu, bx_phy_address addr, unsigned le
     FILE* outfile = fopen("ram.dat", "ab+");
     if(outfile != NULL) {
       unsigned long t = GetMillisecondsTime();
+      char status[] = { 'w' };
+      fwrite(&status, sizeof(char),1,outfile);
       fwrite(&t, sizeof(long),1,outfile);
       fwrite(&addr, sizeof(Bit32u),1,outfile);
       // printf("%d", sizeof(Bit32u));
