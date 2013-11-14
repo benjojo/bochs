@@ -426,18 +426,6 @@ void BX_MEM_C::dmaWritePhysicalPage(bx_phy_address addr, unsigned len, Bit8u *da
   if (memptr != NULL) {
     pageWriteStampTable.decWriteStamp(addr);
     memcpy(memptr, data, len);
-    /*
-    if(lastsnapshot < time(0)) {
-      // We need to make a snapshot now.
-      lastsnapshot = time(0);
-      FILE* outfile = fopen("ram.dat", "ab+");
-      if(outfile != NULL) {
-        fwrite(&addr, sizeof(Bit32u),1,outfile);
-        fwrite(&len, sizeof(unsigned),1,outfile);
-        fclose(outfile);
-      }
-    }
-    */
   }
   else {
     for (unsigned i=0;i < len; i++) {
