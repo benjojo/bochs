@@ -13,6 +13,7 @@ namespace vizzi
 {
     class RamEvent 
     {
+        public char type;
         public UInt64 time;
         public UInt32 addr;
         public UInt32 len;
@@ -126,7 +127,7 @@ namespace vizzi
         static RamEvent ParseChunk(byte[] Chunk)
         {
             RamEvent Data = new RamEvent();
-
+            Data.type = (char)Chunk[0];
             Data.time = BitConverter.ToUInt64(Chunk, 1);
             Data.addr = BitConverter.ToUInt32(Chunk, 9);
             Data.len = BitConverter.ToUInt32(Chunk,13);
