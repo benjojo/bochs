@@ -95,23 +95,23 @@ namespace vizzi
             // We need to check if we can divide by 16 in this file else we might of messed up
             // or even worse a user might be trying to put a .doc file into us.
 
-            if(File.Length % 16 != 0) 
+            if(File.Length % 17 != 0) 
             {
                 Console.WriteLine("WARNING. FILE IS NOT DIVIDABLE BY 16. WHAT I AM ABOUT TO DO IS PROABBLY NOT WHAT YOU WANT ME TO DO.");
                 Console.WriteLine("Press enter if you really want me to do this.");
                 Console.ReadLine();
             }
 
-            byte[] Buffer = new byte[16];
+            byte[] Buffer = new byte[17];
             int p = 0;
             int len = File.Length;
             for(int i = 0; i < len; i++)
             {
-                if(i % 16 == 0 && i != 0)
+                if(i % 17 == 0 && i != 0)
                 {
                     EventList.Add(ParseChunk(Buffer));
                     p = 0;
-                    for(int c = 0; c < 16; c++)
+                    for(int c = 0; c < 17; c++)
                     {
                         Buffer[c] = 0x00;
                     }
@@ -127,9 +127,9 @@ namespace vizzi
         {
             RamEvent Data = new RamEvent();
 
-            Data.time = BitConverter.ToUInt64(Chunk, 0);
-            Data.addr = BitConverter.ToUInt32(Chunk, 8);
-            Data.len = BitConverter.ToUInt32(Chunk,12);
+            Data.time = BitConverter.ToUInt64(Chunk, 1);
+            Data.addr = BitConverter.ToUInt32(Chunk, 9);
+            Data.len = BitConverter.ToUInt32(Chunk,13);
 
             return Data;
         }
